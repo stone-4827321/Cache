@@ -1,4 +1,4 @@
-# 缓存
+# 概述
 
 - 缓存是本地数据存储，存储方式主要包含两种：磁盘储存和内存存储。
 - 磁盘缓存：磁盘是程序的存储空间，磁盘缓存容量大速度慢，是永久存储东西的。
@@ -18,7 +18,7 @@
   - **代码区：**存储代码。
 - 在程序中声明的容器（数组 、字典）都可看做内存中存储。
 
-## SQLite
+# SQLite
 
 - 为什么要用 SQLite
   - 不需要一个单独的服务器进程或操作的系统（无服务器的）。
@@ -39,7 +39,7 @@
 
   - SQLite 可在 UNIX（Linux, Mac OS-X, Android, iOS）和 Windows（Win32, WinCE, WinRT）中运行。
 
-### 命令
+## 命令
 
   - DDL - 数据定义语言
     - **CREATE**：创建一个新的表，一个表的视图，或者数据库中的其他对象。
@@ -55,16 +55,15 @@
 
     - **SELECT**：从一个或多个表中检索记录。
 
+## 类型
 
-### 类型
   - **NULL**：值是一个 NULL 值。
   - **INTEGER**：值是一个带符号的整数，根据值的大小存储在 1、2、3、4、6 或 8 字节中。可以附带 **AUTOINCREMENT** 关键字实现自增。
   - **REAL**：值是一个浮点值，存储为 8 字节的 IEEE 浮点数字。
   - **TEXT**：值是一个文本字符串，使用数据库编码（UTF-8、UTF-16BE 或 UTF-16LE）存储。
   - **BLOB**：值是一个 blob 数据，完全根据它的输入存储。
 
-
-### 约束
+## 约束
 
 - 约束是在表的数据列上强制执行的规则，用来限制可以插入到表中的数据类型，确保数据库中数据的准确性和可靠性。
 
@@ -88,7 +87,7 @@
   );
   ```
 
-### 索引
+## 索引
 
 - 索引（Index）是一种特殊的查找表，数据库搜索引擎用来加快数据检索。
 
@@ -107,7 +106,7 @@
   CREATE UNIQUE INDEX com_index ON company (salary, address);
   ```
 
-### 子句
+## 子句
 
 - **WHERE** 子句指定获取数据的条件，可用于 SELECT、UPDATE、DELETE 语句中。
 
@@ -137,12 +136,12 @@
   SELECT * FROM table_name GROUP BY column 
   ```
 
-## iOS & SQLite3
+# iOS & SQLite3
 
 - 在 iOS 中使用 SQLite3，需要添加库文件 **libsqlite3.tbd**，并导入头文件 `#import <sqlite3.h>`
 - 对于 SQlite3，所有的 API 函数都有一个前缀：**sqlite3_**，表明这些函数由 SQlite 数据库产品提供，3代表版本。
 
-### 打开数据库
+## 打开数据库
 
 - 建立并保存句柄 db，db就是数据库的象征，任何对数据库的操作，都是对这个句柄进行操作。
 
@@ -173,9 +172,9 @@
   - `sqlite3_close` 关闭时，如果存在某些没有完成的（nonfinalized）SQL 语句等情况，函数将会返回SQLITE_BUSY 错误。需要调用 `sqlite3_finalize` 完结所有的预处理语句之后再次调用 `sqlite3_close`。
   - `sqlite3_close_v2` 关闭时，以上情况下会直接返回 SQLITE_OK，会等待未完成语句完成后自动释放连接，非常适用于具有垃圾回收机制的语言。
 
-### 执行 SQL
+## 执行 SQL
 
-#### 便捷函数
+### 便捷函数
 
 - SQlite 拥有很多早期遗留下来的便捷函数，其优缺点十分明显：
   - 优点：使用方便。
@@ -229,7 +228,7 @@
   sqlite3_free_table(pazResult);
   ```
 
-#### 预处理和参数绑定
+### 预处理和参数绑定
 
 - 一般情况下，除了表操作，其他 SQL 语句推荐使用 `sqlite3_prepare_v2`  和 `sqlite3_step` 进行操作。
 
@@ -348,10 +347,9 @@
   - 对于有些函数，只能在某条语句处于特定状态下才可以执行，比如 sqlite3_bind_xxx 函数，只有在一条语句处于“ready”状态时才可以被调用，否则函数将会返回 SQLITE_MISUSE 错误码。
     ![](https://tva1.sinaimg.cn/large/0081Kckwgy1gkl6ze7kb3j30r00e245p.jpg)
 
+## 表
 
-### 表
-
-#### 创建表
+### 创建表
 
 - SQLite 的 **CREATE TABLE** 语句用于在任何给定的数据库创建一个新表。
 
@@ -369,7 +367,7 @@
   }
   ```
 
-#### 删除表
+### 删除表
 
 - SQLite 的 **DROP TABLE** 语句用来删除表定义及其所有相关数据、索引、触发器、约束和该表的权限规范。
 
@@ -378,7 +376,7 @@
   sqlite3_exec(_db, sql, NULL, NULL, NULL);
   ```
 
-#### 修改表
+### 修改表
 
 - SQLite 的 **ALTER TABLE** 语句用来修改已有的表，包括重命名表和在已有的表中添加额外的列。
 
@@ -390,9 +388,9 @@
   sqlite3_exec(_db, sql, NULL, NULL, NULL);
   ```
   
-### 操作
+## 操作
 
-#### 插入数据
+### 插入数据
 
 - SQLite 的 **INSERT INTO** 语句用于向数据库的某个表中添加新的数据行。
 
@@ -425,7 +423,7 @@
   stmt = NULL;
   ```
 
-#### 删除数据
+### 删除数据
 
 - SQLite 的 **DELETE** 查询用于删除表中已有的记录。可以使用带有 WHERE 子句的 DELETE 查询来删除选定行，否则所有的记录都会被删除。
 
@@ -448,7 +446,7 @@
   stmt = NULL;
   ```
 
-#### 更新数据
+### 更新数据
 
 - SQLite 的 **UPDATE** 查询用于修改表中已有的记录。可以使用带有 WHERE 子句的 UPDATE 查询来更新选定行，否则所有的行都会被更新。
 
@@ -503,7 +501,7 @@
   stmt = NULL;
   ```
 
-## YYCache
+# YYCache
 
 - 优秀的缓存应该具备哪些特质？
 
@@ -521,8 +519,7 @@
     - `YYKVStorageItem`：磁盘存储的缓存对象。
       ![](https://tva1.sinaimg.cn/large/0081Kckwgy1gkl6ze27dnj30gs09kweh.jpg)
 
-
-### YYMemoryCache
+## YYMemoryCache
 
 - `YYMemoryCache` 负责处理容量小，相对高速的内存缓存。主要包括以下两个特点：
 
@@ -532,8 +529,7 @@
 
 - 使用 `CFMutableDictionaryRef` 能避免 key 的 copy。而 `NSMutableDictionary` 的 key 会强制进行 copy，性能会有些损耗。
 
-
-### YYDiskCache
+## YYDiskCache
 
 - `YYDiskCache` 负责处理容量大，相对低速的磁盘缓存。主要包括以下两个特点：
 
@@ -542,10 +538,10 @@
     - 文件+数据库的形式: 针对大容量缓存，缓存的 data 写在文件系统里，其元数据保存在数据库里。
   - 除了 cost，count 和 age 三个维度之外，还添加了一个磁盘容量的维度。
 
+# 缓存淘汰策略
 
-## 缓存淘汰策略
+## LRU
 
-### LRU
 - LRU（Least Recently Used，最近最久未使用）算法根据数据的历史访问**时间记录**来进行淘汰数据，其核心思想是“**如果数据最近被访问过，那么将来被访问的几率也更高**”。
 
   ![](https://tva1.sinaimg.cn/large/0081Kckwgy1gkl6zedcbcj30l30g1dgi.jpg)
@@ -566,7 +562,7 @@
 
 > 最近最常使用算法（MRU）：最近最常使用的项先被移除。
 
-### LFU
+## LFU
 
 - LFU（Least Frequently Used，最近最久未使用）算法根据数据的历史访问**次数记录**来进行淘汰数据，其核心思想是“**如果数据最近访问次数很少，那么将来被访问的几率也很小**”。
 
